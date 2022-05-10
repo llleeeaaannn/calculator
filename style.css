@@ -1,0 +1,94 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+/* div {
+  border: 1px black solid;
+  min-width: 20px;
+  min-height: 20px;
+} */
+
+#main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 5px;
+  width: 30vw;
+  height: 75vh;
+  border: 2px blue solid;
+  border-radius: 20px;
+}
+
+#screen-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex: 1 0 0;
+  margin: 10px 10px;
+}
+
+#buttons-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 3 0 0;
+}
+
+#clear-delete-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 0;
+}
+
+#key-container {
+  display: flex;
+  flex-direction: column;
+  flex: 4 0 0;
+}
+
+#row0,
+#row1,
+#row2,
+#row3 {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 0;
+}
+
+.key {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  margin: 5px;
+  border: 1px red solid;
+  border-radius: 10px;
+}
+
+#top-screen,
+#bottom-screen {
+  width: auto;
+  margin: 5px;
+  border: 1px orange solid;
+  border-radius: 10px;
+  align-self: stretch;
+}
+
+#bottom-screen {
+  flex: 3 0 0;
+}
+
+#top-screen {
+  flex: 2 0 0;
+}
