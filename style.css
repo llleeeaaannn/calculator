@@ -90,5 +90,8 @@
 }
 
 #top-screen {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   flex: 2 0 0;
 }

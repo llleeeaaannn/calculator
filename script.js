@@ -1,9 +1,16 @@
 //Defining variables
 let mainValue = '';
 let savedValue = '';
+let secondSavedValue = '';
 let operator = '';
-let operatorEnteredLast = false;
-let operationStarted = false;
+let equalSign = '';
+
+
+// Defining elements
+let topScreenSavedValue = document.getElementById('ts-saved-value');
+let topScreenOperator = document.getElementById('ts-operator');
+let topScreenSecondSavedValue = document.getElementById('ts-second-saved-value');
+let topScreenEqual = document.getElementById('ts-equal');
 
 // Function to add two numbers together
 function add(a, b) {
@@ -31,14 +38,16 @@ function divide(a, b) {
 
 // Function which accepts operator and 2 numbers and performs said operation on the numbers
 function operate(operator, a, b) {
+  let numA = Number(a);
+  let numB = Number(b);
   if (operator === '+') {
-    return(add(a, b));
+    return(add(numA, numB));
   } else if (operator === '-') {
-    return(subtract(a, b));
-  } else if (operator === '*') {
-    return(multiply(a, b));
-  } else if (operator === '/') {
-    return(divide(a, b));
+    return(subtract(numA, numB));
+  } else if (operator === '×') {
+    return(multiply(numA, numB));
+  } else if (operator === '÷') {
+    return(divide(numA, numB));
   }
 }
 
@@ -158,8 +167,16 @@ function addKeysListeners() {
       })
     } else if (key.id === 'clear-button') {
       key.addEventListener('click', function() {
-        changeValue(0);
-        showMainValue();
+        clearValues();
+        showBottomScreen();
+      })
+    } else if (key.id === 'delete-button') {
+      key.addEventListener('click', function() {
+        backSpace();
+      })
+    } else if (key.id === '=') {
+      key.addEventListener('click', function() {
+        clickEquals();
       })
     }
   })
@@ -167,43 +184,51 @@ function addKeysListeners() {
 
 addKeysListeners()
 
-function showMainValue() {
+function showBottomScreen() {
   let screenBottom = document.getElementById('bottom-screen');
   screenBottom.innerHTML = mainValue;
 }
 
-function showSavedValue() {
-  let screenTop = document.getElementById('top-screen');
-  screenTop.innerHTML = savedValueWithOperator;
+function showTopScreen() {
+  topScreenSavedValue.innerHTML = savedValue;
+  topScreenOperator.innerHTML = operator;
+  topScreenSecondSavedValue.innerHTML = secondSavedValue;
+  topScreenEqual.innerHTML = equalSign;
 }
 
-function changeValue(a) {
-  mainValue = a;
+function clearValues() {
+  mainValue = '';
+  savedValue = '';
+  secondSavedValue = '';
+  operator = '';
+  equalSign = '';
+  showTopScreen();
+  showBottomScreen();
+}
+
+function backSpace() {
+  if (mainValue.length > 0) {
+    mainValue = mainValue.slice(0, -1);
+    showBottomScreen();
+  }
 }
 
 function clickNumber() {
-  if (!operatorEnteredLast) {
-    mainValue += Number(event.target.id);
-    showMainValue();
-    operatorEnteredLast = false;
-  } else {
-    mainValue = '';
-    mainValue += Number(event.target.id);
-    showMainValue();
-    operatorEnteredLast = false;
-  }
+  mainValue += Number(event.target.id);
+  showBottomScreen();
 }
 
 function clickOperator() {
-  if (operationStarted) {
-    savedValue = operate(operator, savedValue, mainValue);
-    savedValueWithOperator = savedValue + ' ' + operator;
-    showSavedValue();
-  } else {
-    savedValue = mainValue;
-    savedValueWithOperator = savedValue + ' ' + operator;
-    operatorEnteredLast = true;
-    operationStarted = true;
-    showSavedValue();
-  }
+  savedValue = mainValue;
+  mainValue = '';
+  showTopScreen();
+  showBottomScreen();
+}
+
+function clickEquals() {
+  equalSign = '=';
+  secondSavedValue = mainValue;
+  mainValue = `${operate(operator, savedValue, secondSavedValue)}`;
+  showTopScreen();
+  showBottomScreen();
 }
