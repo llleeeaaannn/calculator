@@ -42,6 +42,8 @@
   flex-direction: column;
   width: 100%;
   flex: 3 0 0;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 #clear-delete-container {
@@ -74,6 +76,10 @@
   border: 2px #000 solid;
   border-radius: 10px;
   background-color: #d6d6d6;
+}
+
+.hover {
+  background-color: #bdbbbb;
 }
 
 #top-screen,

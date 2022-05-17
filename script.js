@@ -82,6 +82,12 @@ function makeClear() {
   let makeDiv = document.createElement('div');
   makeDiv.textContent = 'CLEAR';
   makeDiv.classList.add('key');
+  makeDiv.addEventListener('mouseover', () => {
+    makeDiv.classList.add('hover')
+  });
+  makeDiv.addEventListener('mouseout', () => {
+    makeDiv.classList.remove('hover')
+  })
   makeDiv.setAttribute('id', 'clear-button');
   container.appendChild(makeDiv);
 }
@@ -91,6 +97,12 @@ function makeDelete() {
   let makeDiv = document.createElement('div');
   makeDiv.textContent = 'DELETE';
   makeDiv.classList.add('key');
+  makeDiv.addEventListener('mouseover', () => {
+    makeDiv.classList.add('hover')
+  });
+  makeDiv.addEventListener('mouseout', () => {
+    makeDiv.classList.remove('hover')
+  })
   makeDiv.setAttribute('id', 'delete-button');
   container.appendChild(makeDiv);
 }
@@ -149,6 +161,12 @@ function addKeys() {
       makeDiv.classList.add('key');
       makeDiv.setAttribute('data-number', key);
       makeDiv.setAttribute('id', key);
+      makeDiv.addEventListener('mouseover', () => {
+        makeDiv.classList.add('hover')
+      });
+      makeDiv.addEventListener('mouseout', () => {
+        makeDiv.classList.remove('hover')
+      })
       makeSpan.setAttribute('data-number', key);
       makeSpan.setAttribute('id', key);
       makeDiv.appendChild(makeSpan);
