@@ -5,6 +5,8 @@ let secondSavedValue = '';
 let operator = '';
 let equalSign = '';
 
+let previousOperator = false;
+
 
 // Defining elements
 let topScreenSavedValue = document.getElementById('ts-saved-value');
@@ -41,13 +43,37 @@ function operate(operator, a, b) {
   let numA = Number(a);
   let numB = Number(b);
   if (operator === '+') {
-    return(add(numA, numB));
+    let total = roundTo(add(numA, numB));
+    if (isNaN(total) || total === undefined) {
+      clearValues();
+      return 'Error'
+    } else {
+      return total;
+    }
   } else if (operator === '-') {
-    return(subtract(numA, numB));
+    let total = roundTo(subtract(numA, numB));
+    if (isNaN(total)) {
+      clearValues();
+      return 'Error'
+    } else {
+      return total;
+    }
   } else if (operator === '×') {
-    return(multiply(numA, numB));
+    let total = roundTo(multiply(numA, numB))
+    if (isNaN(total)) {
+      clearValues();
+      return 'Error';
+    } else {
+      return total;
+    }
   } else if (operator === '÷') {
-    return(divide(numA, numB));
+    let total = roundTo(divide(numA, numB));
+    if (isNaN(total) || total === undefined) {
+      clearValues();
+      return 'Error'
+    } else {
+      return total;
+    }
   }
 }
 
@@ -158,12 +184,15 @@ function addKeysListeners() {
   keys.forEach(function(key) {
     if (validNumbers.includes(key.id)) {
       key.addEventListener('click', function(event) {
-        clickNumber();
+        clickNumber(event.target.id);
       })
     } else if (validOperators.includes(key.id)) {
       key.addEventListener('click', function(event) {
-        operator = key.id;
-        clickOperator();
+        clickOperator(key.id);
+      })
+    } else if (key.id === '.') {
+      key.addEventListener('click', function(event) {
+        clickDecimal();
       })
     } else if (key.id === 'clear-button') {
       key.addEventListener('click', function() {
@@ -182,10 +211,37 @@ function addKeysListeners() {
   })
 }
 
-addKeysListeners()
+addKeysListeners();
+
+
+
+// '.',
+// '/',
+// '*',
+// '+',
+// '-',
+// '='
+
+document.addEventListener('keydown', keyPressed);
+
+function keyPressed(e) {
+  let key = e.key;
+  console.log(key);
+  if (validNumbers.includes(key)) {
+    clickNumber(key);
+  } else if (key === '.') {
+    clickDecimal();
+  } else if (key === 'Backspace') {
+    backSpace();
+  } else if (validOperators.includes(key)) {
+    clickOperator(key);
+  } else if (key === '=' || key === 'Enter') {
+    clickEquals();
+  }
+}
 
 function showBottomScreen() {
-  let screenBottom = document.getElementById('bottom-screen');
+  let screenBottom = document.getElementById('bs-main-value');
   screenBottom.innerHTML = mainValue;
 }
 
@@ -213,16 +269,45 @@ function backSpace() {
   }
 }
 
-function clickNumber() {
-  mainValue += Number(event.target.id);
-  showBottomScreen();
+function clickNumber(key) {
+  if (mainValue === 'Error') {
+    mainValue = '';
+    mainValue += Number(key);
+    showBottomScreen();
+  } else {
+    mainValue += Number(key);
+    showBottomScreen();
+  }
 }
 
-function clickOperator() {
-  savedValue = mainValue;
-  mainValue = '';
-  showTopScreen();
-  showBottomScreen();
+function clickDecimal() {
+  if (!mainValue.includes('.')) {
+    mainValue += '.';
+    showBottomScreen();
+  }
+}
+
+function clickOperator(input) {
+  if (mainValue === '') {
+    operator = input;
+    showTopScreen();
+  } else if (!operationUnderway()) {
+    operator = input;
+    savedValue = mainValue;
+    mainValue = '';
+    showTopScreen();
+    showBottomScreen();
+    console.log('hi');
+  } else {
+    savedValue = `${operate(operator, savedValue, mainValue)}`;
+    operator = input;
+    mainValue = '';
+    secondSavedValue = '';
+    equalSign = '';
+    showTopScreen();
+    showBottomScreen();
+    console.log('bye');
+  }
 }
 
 function clickEquals() {
@@ -231,4 +316,20 @@ function clickEquals() {
   mainValue = `${operate(operator, savedValue, secondSavedValue)}`;
   showTopScreen();
   showBottomScreen();
+  savedValue = '';
+  secondSavedValue = '';
+  operator = '';
+  equalSign = '';
+}
+
+function operationUnderway() {
+  if (!(savedValue === '') && !(mainValue === '') && !(operator === '')) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function roundTo(num) {
+    return +(Math.round(num + "e+3")  + "e-3");
 }
